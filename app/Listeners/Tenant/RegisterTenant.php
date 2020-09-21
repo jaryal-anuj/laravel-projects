@@ -4,20 +4,18 @@ namespace App\Listeners\Tenant;
 
 use App\Tenant\Manager;
 use App\Events\Tenant\TenantIdentified;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Tenant\Database\DatabaseManager;
+
 
 
 class RegisterTenant
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
+
+    protected $db;
+
+    public function __construct(DatabaseManager $db)
     {
-        //
+        $this->db = $db;
     }
 
     /**
@@ -29,5 +27,6 @@ class RegisterTenant
     public function handle(TenantIdentified $event)
     {
         app(Manager::class)->setTenant($event->tenant);
+        $this->db->createConnection($event->tenant);
     }
 }
