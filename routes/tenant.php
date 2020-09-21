@@ -10,3 +10,5 @@ Route::get('/test',function(){
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::resource('projects','Tenant\ProjectController');
