@@ -2,18 +2,20 @@
 
 namespace App\Console\Commands\Tenant;
 
-use App\Models\Company;
+
 use App\Tenant\Database\DatabaseManager;
-use Illuminate\Console\Command;
+use App\Tenant\Traits\Console\AcceptsMultipleTenant;
+use App\Tenant\Traits\Console\FetchesTenant;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Database\Console\Migrations\MigrateCommand;
+
 
 class Migrate extends MigrateCommand
 {
 
 
-
+    use FetchesTenant,AcceptsMultipleTenant;
 
     protected $description = 'Run migrations for tenants';
     protected $db;
@@ -27,6 +29,7 @@ class Migrate extends MigrateCommand
     {
         parent::__construct($migrator,$dispatcher);
         $this->setName('tenants:migrate');
+        $this->specifyParameters();
         $this->db = $db;
     }
 
@@ -42,9 +45,8 @@ class Migrate extends MigrateCommand
         }
 
         $this->input->setOption('database','tenant');
-        $tenants =Company::get();
 
-        $tenants->each(function($tenant){
+        $this->tenants($this->option('tenants'))->each(function($tenant){
 
 
             $this->db->createConnection($tenant);
@@ -56,6 +58,8 @@ class Migrate extends MigrateCommand
         });
 
     }
+
+
 
     protected function getMigrationPaths()
     {
