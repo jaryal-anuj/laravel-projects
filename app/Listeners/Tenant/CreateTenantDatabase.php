@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Tenant;
 
+use App\Events\Tenant\TenantDatabaseCreated;
 use App\Events\Tenant\TenantWasCreated;
 use App\Tenant\Database\DatabaseCreator;
 use Exception;
@@ -28,5 +29,7 @@ class CreateTenantDatabase
         if(!$this->databaseCreator->create($event->tenant)){
             throw new Exception('Database failed to be created');
         }
+
+        event(new TenantDatabaseCreated($event->tenant));
     }
 }
