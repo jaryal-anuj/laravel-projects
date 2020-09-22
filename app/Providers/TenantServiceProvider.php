@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Console\Commands\Tenant\Migrate;
+use App\Console\Commands\Tenant\MigrateRollback;
 use App\Tenant\Database\DatabaseManager;
 use App\Tenant\Manager;
 use Illuminate\Http\Request;
@@ -23,6 +24,11 @@ class TenantServiceProvider extends ServiceProvider
         $this->app->singleton(Migrate::class, function($app){
 
             return new Migrate($app->make('migrator'),$app->make(Dispatcher::class),$app->make(DatabaseManager::class));
+        });
+
+        $this->app->singleton(MigrateRollback::class, function($app){
+
+            return new MigrateRollback($app->make('migrator'), $app->make(DatabaseManager::class));
         });
     }
 
