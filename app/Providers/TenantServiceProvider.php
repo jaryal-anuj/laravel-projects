@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Tenant\Migrate;
+use App\Tenant\Database\DatabaseManager;
 use App\Tenant\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Events\Dispatcher;
 
 
 class TenantServiceProvider extends ServiceProvider
@@ -17,7 +20,10 @@ class TenantServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Migrate::class, function($app){
+
+            return new Migrate($app->make('migrator'),$app->make(Dispatcher::class),$app->make(DatabaseManager::class));
+        });
     }
 
     /**

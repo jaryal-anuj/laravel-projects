@@ -2,12 +2,28 @@
 namespace App\Tenant\Database;
 
 use App\Tenant\Models\Tenant;
+use Illuminate\Database\DatabaseManager as BaseDatabaseManager;
 
 class DatabaseManager{
+
+    protected $db;
+
+    public function __construct(BaseDatabaseManager $db)
+    {
+        $this->db = $db;
+    }
+
+    public function connectToTenant(){
+        $this->db->reconnect('tenant');
+    }
 
     public function createConnection(Tenant $tenant){
 
         config()->set('database.connections.tenant',$this->getTenantConnection($tenant));
+    }
+
+    public function purge(){
+        $this->db->purge('tenant');
     }
 
     public function getTenantConnection(Tenant $tenant){
