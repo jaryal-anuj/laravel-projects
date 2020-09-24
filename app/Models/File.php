@@ -6,16 +6,11 @@ use App\Tenant\Traits\ForTenants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class File extends Model
 {
     use HasFactory,ForTenants;
 
-    protected $fillable = [
-        'name'
+    protected $fillable=[
+        'name','path'
     ];
-
-    public function files()
-    {
-        return $this->hasMany(File::class);
-    }
 }

@@ -23,6 +23,11 @@ class ProjectController extends Controller
 
         return view('tenant.projects.index', compact('projects'));
     }
+    public function show(Project $project)
+    {
+
+        return view('tenant.projects.show', compact('project'));
+    }
 
     public function store(Request $request)
     {

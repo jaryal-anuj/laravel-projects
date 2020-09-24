@@ -12,3 +12,9 @@ Route::get('/test',function(){
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('projects','Tenant\ProjectController');
+
+Route::resource('projects/{project}/files', 'Tenant\ProjectFileController', [
+    'names' => [
+        'store' => 'projects.files.store'
+    ]
+]);

@@ -19,10 +19,12 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         'App\Events\Tenant\TenantIdentified'=>[
-            'App\Listeners\Tenant\RegisterTenant'
+            'App\Listeners\Tenant\RegisterTenant',
+            'App\Listeners\Tenant\UseTenantFileSystem'
         ],
         'App\Events\Tenant\TenantWasCreated'=>[
-            'App\Listeners\Tenant\CreateTenantDatabase'
+            'App\Listeners\Tenant\CreateTenantDatabase',
+
         ],
         'App\Events\Tenant\TenantDatabaseCreated'=>[
             'App\Listeners\Tenant\SetUpTenantDatabase'
