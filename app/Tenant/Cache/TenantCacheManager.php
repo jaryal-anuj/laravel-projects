@@ -1,0 +1,22 @@
+<?php
+namespace App\Tenant\Cache;
+
+use App\Tenant\Manager;
+use Illuminate\Cache\CacheManager;
+
+class TenantCacheManager extends CacheManager{
+
+    public function __call($method, $parameters)
+    {
+        if($method == 'tags'){
+            return $this->store()->tags(
+                array_merge($this->getTenantCacheTag(), ...$parameters)
+            );
+        }
+        return $this->store()->tags($this->getTenantCacheTag())->$method(...$parameters);
+    }
+
+    public function getTenantCacheTag(){
+        return ['tenant_'.$this->app(Manager::class)->getTenant()->uuid];
+    }
+}
